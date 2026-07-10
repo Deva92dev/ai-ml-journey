@@ -5,6 +5,8 @@
 - In mathematics and machine learning, a vector is also an ordered list of scalars
   (e.g., <x, y, z>) used to represent data points, features, or physical quantities with both magnitude and direction.
 
+- If there is a empty vector, it must result in error or undefined behavior.
+
 - Utility operations
 - Where A , B are vectors
 - Addition: Dimensions must match
@@ -32,7 +34,11 @@
   - Row Type Check: Verify every element in the outer list is itself a list using isinstance(row, list).
   - Dimension Consistency: Ensure all rows have the same number of elements (e.g., comparing len(row) to len(matrix[0]))
 
+  - Matrix multiplication is impossible when the number of columns in the first matrix does not equal the number of rows in the second matrix
+
 - Accept integers as well as floating point integers(make sure to limit it to 2 places after decimal)
+
+- A matrix is not invertible if it has non-square dimensions, its determinant is 0, zero eigenvalues and zero rows and column.
 
 - Utility operations
 - Addition
@@ -44,3 +50,12 @@
 - Inverse
 - Rank
 - Eigenvalues and Eigenvectors
+
+# Extensibility
+
+- For each future operation, do this:
+  - A normal case.
+  - A boundary case.
+  - An invalid case.
+
+- Matrix multiplication, Vector and Scalar Operations, Transpose operations will come very handy in Gradient descent and Neural Network projects
