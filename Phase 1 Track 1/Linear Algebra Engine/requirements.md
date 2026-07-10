@@ -1,0 +1,46 @@
+# Vector Operations
+
+- In programming, a vector typically refers to a dynamic array, a data structure that stores a sequence of elements of the same type and automatically resizes itself as elements are added or removed
+
+- In mathematics and machine learning, a vector is also an ordered list of scalars
+  (e.g., <x, y, z>) used to represent data points, features, or physical quantities with both magnitude and direction.
+
+- Utility operations
+- Where A , B are vectors
+- Addition: Dimensions must match
+- Subtraction: Dimensions must match
+- Scalar Product = n . A
+- Cross Product = A x B = |A| |B| Sinθ : : Dimensions must match
+- Dot Product(Scalar Product) = A ⋅ B = |A| |B| . cosθ : : Dimensions must match
+- If dot product is zero(what happens)
+
+# Matrix Operations
+
+- In software, a matrix is a two-dimensional data structure (often called a 2D array) that organizes values into rows and columns. It serves as a compact, efficient container for structured data, such as grid-based images, game boards, or mathematical models.
+  - len(matrix): Returns the height (rows).
+  - len(matrix[0]): Returns the width (columns).
+
+- Empty, Null Matrices
+  - an empty matrix (a list of lists with no rows) is detected by checking if the outer list is empty using len(matrix) == 0 or the boolean evaluation "not matrix"
+  - a null matrix (a matrix where all elements are zero) in pure Python without external libraries, you can iterate through the nested list structure to verify that every element equals zero.
+
+- Invalid Matrix
+  - An invalid matrix in pure Python (represented as a list of lists) is detected by ensuring two conditions: every element is a list (checking if the outer structure is a matrix) and all inner lists have the same length (ensuring rectangular consistency)
+
+  - Type Check: Use isinstance(matrix, list) to confirm the input is a list.
+
+  - Row Type Check: Verify every element in the outer list is itself a list using isinstance(row, list).
+  - Dimension Consistency: Ensure all rows have the same number of elements (e.g., comparing len(row) to len(matrix[0]))
+
+- Accept integers as well as floating point integers(make sure to limit it to 2 places after decimal)
+
+- Utility operations
+- Addition
+- Subtraction
+- Multiplication
+- Determinant
+- Identity matrix
+- Transpose(Gaussian elimination method)
+- Inverse
+- Rank
+- Eigenvalues and Eigenvectors
