@@ -1,5 +1,9 @@
 # Vector Operations
 
+- Store values as co-ordinates that is more performant like self.x etc
+- every vector must have repr, str, addition, multiplication, truediv, rmul, norm, etc
+- in case of invalid vector, raise error
+
 - In programming, a vector typically refers to a dynamic array, a data structure that stores a sequence of elements of the same type and automatically resizes itself as elements are added or removed
 
 - In mathematics and machine learning, a vector is also an ordered list of scalars
@@ -12,9 +16,12 @@
 - Addition: Dimensions must match
 - Subtraction: Dimensions must match
 - Scalar Product = n . A
-- Cross Product = A x B = |A| |B| Sinθ : : Dimensions must match
-- Dot Product(Scalar Product) = A ⋅ B = |A| |B| . cosθ : : Dimensions must match
+- Cross Product = A x B = |A| |B| Sinθ : Dimensions must match
+- Dot Product(Scalar Product) = A ⋅ B = |A| |B| . cosθ : Dimensions must match
 - If dot product is zero(what happens)
+
+- dot product produces a scalar value representing the alignment of two vectors. It Measures projection and work.
+- the cross product produces a vector perpendicular to the plane of the original two. It Measures perpendicularity and area
 
 # Matrix Operations
 
