@@ -1,6 +1,6 @@
-from fastapi import FastAPI, status, HTTPException
+from fastapi import FastAPI, status, HTTPException, Query
 from pydantic import BaseModel
-from typing import List
+from typing import List, Optional
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import Response
 
@@ -24,9 +24,21 @@ async def create_one_book(book: Book):
 
 
 # filtering is remaining
+# @app.get("/books/", status_code=status.HTTP_200_OK, response_model=List[Book])
+# async def get_all_books(skip: int = 0, limit: int = 3):
+#     return books_database[skip : skip + limit]
+
+
 @app.get("/books/", status_code=status.HTTP_200_OK, response_model=List[Book])
-async def get_all_books(skip: int = 1, limit: int = 2):
-    return books_database[skip : skip + limit]
+async def get_all_books(
+    author: Optional[str] = Query(None, description="Search By Author name"),
+):
+    results = books_database
+
+    if author:
+        results = [item for item in results if item.author == author]
+
+    return results
 
 
 @app.get("/books/{title}", response_model=List[Book])
