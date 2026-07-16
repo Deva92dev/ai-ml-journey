@@ -1,14 +1,15 @@
 # Vector Operations
 
-- Store values as co-ordinates that is more performant like self.x etc
-- every vector must have repr, str, addition, multiplication, truediv, rmul, norm, etc
-- in case of invalid vector, raise error
-
 - In programming, a vector typically refers to a dynamic array, a data structure that stores a sequence of elements of the same type and automatically resizes itself as elements are added or removed
 
 - In mathematics and machine learning, a vector is also an ordered list of scalars
   (e.g., <x, y, z>) used to represent data points, features, or physical quantities with both magnitude and direction.
 
+- Store values as list
+- in case of invalid vector, raise error
+- every vector must have repr, addition, multiplication, truediv, rmul, norm, etc
+
+- use len-dunder method to get the length of Vector class
 - If there is a empty vector, it must result in error or undefined behavior.
 
 - Utility operations
@@ -26,15 +27,14 @@
 # Matrix Operations
 
 - In software, a matrix is a two-dimensional data structure (often called a 2D array) that organizes values into rows and columns. It serves as a compact, efficient container for structured data, such as grid-based images, game boards, or mathematical models.
-  - len(matrix): Returns the height (rows).
-  - len(matrix[0]): Returns the width (columns).
+  - list of lists
 
 - Empty, Null Matrices
   - an empty matrix (a list of lists with no rows) is detected by checking if the outer list is empty using len(matrix) == 0 or the boolean evaluation "not matrix"
   - a null matrix (a matrix where all elements are zero) in pure Python without external libraries, you can iterate through the nested list structure to verify that every element equals zero.
 
 - Invalid Matrix
-  - An invalid matrix in pure Python (represented as a list of lists) is detected by ensuring two conditions: every element is a list (checking if the outer structure is a matrix) and all inner lists have the same length (ensuring rectangular consistency)
+  - An invalid matrix in Python (represented as a list of lists) is detected by ensuring two conditions: every element is a list (checking if the outer structure is a matrix) and all inner lists have the same length (ensuring rectangular consistency)
 
   - Type Check: Use isinstance(matrix, list) to confirm the input is a list.
 
