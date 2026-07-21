@@ -1,0 +1,1 @@
+- To return the single book object, use next() with a generator expression to extract the first match

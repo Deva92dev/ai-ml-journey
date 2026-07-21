@@ -1,18 +1,18 @@
 from fastapi import FastAPI, status, HTTPException, Query
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import List, Optional
-from fastapi.encoders import jsonable_encoder
+from enum import Enum
 from fastapi.responses import Response
 
 app = FastAPI(title="My Books API")
 
 
 class Book(BaseModel):
-    id: int
-    title: str
-    author: str
-    price: int
-    year_published: int
+    id: int = Field(gt=0, description="books id")
+    title: str = Field(min_length=3, max_length=50, description="Book name")
+    author: str = Field(min_length=3, max_length=10, description="Author name")
+    price: int = Field(gt=100, description="Price must be greater than 100 rs")
+    year_published: Optional[int] = None
 
 
 class PaginatedBooks(BaseModel):
@@ -23,20 +23,19 @@ class PaginatedBooks(BaseModel):
     count: int
 
 
+class SortOrder(str, Enum):
+    ASC = "asc"
+    DESC = "desc"
+
+
 #  In-memory database
 books_database: List[Book] = []
 
 
-@app.post("/books/", status_code=status.HTTP_201_CREATED)
+@app.post("/books/", status_code=status.HTTP_201_CREATED, response_model=Book)
 async def create_one_book(book: Book):
     books_database.append(book)
-    return {"message": "Book created", "book": book}
-
-
-# filtering is remaining
-# @app.get("/books/", status_code=status.HTTP_200_OK, response_model=List[Book])
-# async def get_all_books(skip: int = 0, limit: int = 3):
-#     return books_database[skip : skip + limit]
+    return book
 
 
 @app.get("/books/", status_code=status.HTTP_200_OK, response_model=PaginatedBooks)
@@ -47,10 +46,17 @@ async def get_all_books(
     ),
     min_price: Optional[int] = Query(None),
     max_price: Optional[int] = Query(None),
-    limit: int = Query(2, ge=1, le=5, description="Items per page"),
+    sort_by: Optional[str] = Query(
+        "year_published", description="sort by year published"
+    ),
+    sort_order: SortOrder = Query(
+        SortOrder.ASC, description="Field to srt by ascending", pattern="^(asc|desc)$"
+    ),
+    limit: int = Query(5, ge=1, le=10, description="Items per page"),
     offset: int = Query(0, ge=0, description="Page Offset"),
 ):
     results = books_database
+    allowed_fields = {"id", "price", "year_published", "title", "author"}
 
     if q:
         q_lower = q.lower()
@@ -64,6 +70,15 @@ async def get_all_books(
     if max_price is not None:
         results = [item for item in results if item.price <= max_price]
 
+    if sort_by not in allowed_fields:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail="Item not properly defined"
+        )
+
+    reverse = sort_order.lower() == SortOrder.DESC
+    # getattr take values at runtime from class objects
+    results = sorted(results, key=lambda x: getattr(x, sort_by), reverse=reverse)
+
     paged_items = results[offset : offset + limit]
 
     return {
@@ -75,9 +90,13 @@ async def get_all_books(
     }
 
 
-@app.get("/books/{id}", response_model=List[Book])
+@app.get("/books/{id}", response_model=Book)
 async def get_single_book(id: int):
-    single_book_data = [item for item in books_database if item.id == id]
+    single_book_data = next((item for item in books_database if item.id == id), None)
+    if not single_book_data:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Item not found"
+        )
     return single_book_data
 
 
@@ -87,9 +106,7 @@ async def update_single_book(id: int, book_update: Book):
     for i, item in enumerate(books_database):
         if item.id == id:
             # Convert existing dict to Pydantic model
-            stored_book = Book(
-                title="some", author="Author", year_published=2025, id=145, price=150
-            )
+            stored_book = item
 
             # Get only the fields explicitly sent in the request
             update_data = book_update.model_dump(exclude_unset=True)
@@ -98,7 +115,7 @@ async def update_single_book(id: int, book_update: Book):
             updated_book = stored_book.model_copy(update=update_data)
 
             # Update the in-memory database
-            books_database[i] = jsonable_encoder(updated_book)
+            books_database[i] = updated_book
             return updated_book
 
     raise HTTPException(status_code=404, detail=f"Item '{id}' not found")
