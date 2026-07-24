@@ -1,8 +1,8 @@
-from fastapi import FastAPI, status, HTTPException, Query
-from pydantic import BaseModel, Field
-from typing import List, Optional
 from enum import Enum
+
+from fastapi import FastAPI, HTTPException, Query, status
 from fastapi.responses import Response
+from pydantic import BaseModel, Field
 
 app = FastAPI(title="My Books API")
 
@@ -12,11 +12,11 @@ class Book(BaseModel):
     title: str = Field(min_length=3, max_length=50, description="Book name")
     author: str = Field(min_length=3, max_length=10, description="Author name")
     price: int = Field(gt=100, description="Price must be greater than 100 rs")
-    year_published: Optional[int] = None
+    year_published: int | None = None
 
 
 class PaginatedBooks(BaseModel):
-    data: List[Book]
+    data: list[Book]
     total: int
     limit: int
     offset: int
@@ -29,7 +29,7 @@ class SortOrder(str, Enum):
 
 
 #  In-memory database
-books_database: List[Book] = []
+books_database: list[Book] = []
 
 
 @app.post("/books/", status_code=status.HTTP_201_CREATED, response_model=Book)
@@ -40,16 +40,12 @@ async def create_one_book(book: Book):
 
 @app.get("/books/", status_code=status.HTTP_200_OK, response_model=PaginatedBooks)
 async def get_all_books(
-    q: Optional[str] = Query(None, description="Search by book name", min_length=5),
-    author: Optional[str] = Query(
-        None, description="Search By Author name", min_length=5
-    ),
-    min_price: Optional[int] = Query(None),
-    max_price: Optional[int] = Query(None),
-    sort_by: Optional[str] = Query(
-        "year_published", description="sort by year published"
-    ),
-    sort_order: SortOrder = Query(
+    q: str | None = Query(None, description="Search by book name", min_length=5),
+    author: str | None = Query(None, description="Search By Author name", min_length=5),
+    min_price: int | None = Query(None),
+    max_price: int | None = Query(None),
+    sort_by: str | None = Query("year_published", description="sort by year published"),
+    sort_order: SortOrder = Query(  # noqa: B008
         SortOrder.ASC, description="Field to srt by ascending", pattern="^(asc|desc)$"
     ),
     limit: int = Query(5, ge=1, le=10, description="Items per page"),
