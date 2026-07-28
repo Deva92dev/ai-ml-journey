@@ -5,12 +5,15 @@
 - In mathematics and machine learning, a vector is also an ordered list of scalars
   (e.g., <x, y, z>) used to represent data points, features, or physical quantities with both magnitude and direction.
 
-- Store values as list
+- Store values as tuple
+- Tuples have a slightly smaller memory footprint than lists because they don't need extra space for resizing.
 - in case of invalid vector, raise error
 - every vector must have repr, addition, multiplication, truediv, rmul, norm, etc
 
 - use len-dunder method to get the length of Vector class
 - If there is a empty vector, it must result in error or undefined behavior.
+
+- the asterisk \* is the unpacking operator
 
 - Utility operations
 - Where A , B are vectors
@@ -27,7 +30,7 @@
 # Matrix Operations
 
 - In software, a matrix is a two-dimensional data structure (often called a 2D array) that organizes values into rows and columns. It serves as a compact, efficient container for structured data, such as grid-based images, game boards, or mathematical models.
-  - list of lists
+  - rows of tuple
 
 - Empty, Null Matrices
   - an empty matrix (a list of lists with no rows) is detected by checking if the outer list is empty using len(matrix) == 0 or the boolean evaluation "not matrix"
@@ -36,7 +39,7 @@
 - Invalid Matrix
   - An invalid matrix in Python (represented as a list of lists) is detected by ensuring two conditions: every element is a list (checking if the outer structure is a matrix) and all inner lists have the same length (ensuring rectangular consistency)
 
-  - Type Check: Use isinstance(matrix, list) to confirm the input is a list.
+  - Type Check: Use isinstance(matrix, tuple) to confirm the input is a list.
 
   - Row Type Check: Verify every element in the outer list is itself a list using isinstance(row, list).
   - Dimension Consistency: Ensure all rows have the same number of elements (e.g., comparing len(row) to len(matrix[0]))
