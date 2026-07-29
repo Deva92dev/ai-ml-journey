@@ -7,6 +7,11 @@ from pydantic import BaseModel, Field
 app = FastAPI(title="My Books API")
 
 
+class HealthResponse(BaseModel):
+    status: str
+    version: str
+
+
 class Book(BaseModel):
     id: int = Field(gt=0, description="books id")
     title: str = Field(min_length=3, max_length=50, description="Book name")
@@ -36,6 +41,11 @@ books_database: list[Book] = []
 async def create_one_book(book: Book):
     books_database.append(book)
     return book
+
+
+@app.get("/health", response_model=HealthResponse)
+async def health_check():
+    return HealthResponse(status="ok", version="1.0.0")
 
 
 @app.get("/books/", status_code=status.HTTP_200_OK, response_model=PaginatedBooks)
