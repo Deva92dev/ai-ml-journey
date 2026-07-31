@@ -33,11 +33,11 @@
   - rows of tuple
 
 - Empty, Null Matrices
-  - an empty matrix (a list of lists with no rows) is detected by checking if the outer list is empty using len(matrix) == 0 or the boolean evaluation "not matrix"
+  - an empty matrix (a tuple of tuple with no rows) is detected by checking if the outer list is empty using len(matrix) == 0 or the boolean evaluation "not matrix"
   - a null matrix (a matrix where all elements are zero) in pure Python without external libraries, you can iterate through the nested list structure to verify that every element equals zero.
 
 - Invalid Matrix
-  - An invalid matrix in Python (represented as a list of lists) is detected by ensuring two conditions: every element is a list (checking if the outer structure is a matrix) and all inner lists have the same length (ensuring rectangular consistency)
+  - An invalid matrix in Python (represented as a tuple of tuples) is detected by ensuring two conditions: every element is a list (checking if the outer structure is a matrix) and all inner lists have the same length (ensuring rectangular consistency)
 
   - Type Check: Use isinstance(matrix, tuple) to confirm the input is a list.
 
