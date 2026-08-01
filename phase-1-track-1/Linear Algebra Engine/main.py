@@ -83,15 +83,12 @@ class Matrix:
     def __init__(self, *args):
         if not args:
             raise ValueError("Can not create an empty Matrix")
-
         self.rows = args
-
         for item in self.rows:
             if not isinstance(item, tuple):
                 raise TypeError("Every item must be tuple")
             if not all(isinstance(every, (int, float)) for every in item):
                 raise TypeError("Every item must be int or float")
-
         if not all(len(row) == len(self.rows[0]) for row in self.rows):
             raise ValueError("Every row must have the same length")
 
@@ -149,7 +146,21 @@ class Matrix:
         answer = tuple(tuple(row) for row in result)
         return answer
 
+    def transpose_matrix(self):
+        row = len(self.rows)
+        col = len(self.rows[0])
+        transposed = []
 
+        for j in range(col):
+            new = []
+            for i in range(row):
+                new.append(self.rows[i][j])
+            transposed.append(new)
+
+        return transposed
+
+
+a = Matrix((10, 20, 30), (40, 50, 60), (70, 80, 90))
 m = Matrix((1, 2, 7), (3, 4, 8), (5, 6, 9))
 n = Matrix((1, 2, 7), (3, 4, 8), (5, 6, 9))
 v = m.__add__(n)
@@ -162,3 +173,6 @@ print(m)
 print(m[2][0])
 for item in m.rows:
     print(item[0], item[1], item[2])
+
+new = a.transpose_matrix()
+print(new)

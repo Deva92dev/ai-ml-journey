@@ -54,11 +54,12 @@
 - Addition
 - Subtraction
 - Multiplication
-- Determinant
-- Identity matrix
-- Transpose(Gaussian elimination method)
-- Inverse
-- Rank
+- Transpose
+- (Gaussian elimination method)
+  - Determinant
+  - Identity matrix
+  - Inverse
+  - Rank
 - Eigenvalues and Eigenvectors
 
 # Extensibility
