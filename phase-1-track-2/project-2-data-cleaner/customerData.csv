@@ -1,0 +1,31 @@
+CustomerID,CustomerName,Age,Gender,Email,Phone,SignupDate,Country,PurchaseAmount,MembershipStatus
+1001,John Smith,28,Male,john.smith@email.com,123-456-7890,2023-01-15,USA,250.50,Active
+1002,Sarah Johnson,34,Female,sarah.johnson@email.com,(123) 456-7890,01/22/2023,USA,175.00,Active
+1003,Michael Brown,,MALE,michaelbrown@email,123.456.7890,15-Mar-2023,usa,$320.75,active
+1004,Emily Davis,29,female,emily.davis@email.com,1234567890,2023-04-10,United States,89.99,Inactive
+1005,  David Wilson  ,45,Male,david.wilson@email.com,,2023/05/18,US,$450.00,Active
+1006,Lisa Anderson,31,F,lisa.anderson@email.com,987-654-3210,06-20-2023,USA,210.25,Active
+1007,James Taylor,twenty-five,Male,james.taylor@email.com,555-123-4567,2023-07-02,Canada,,Active
+1008,Jennifer White,27,Female,jenniferwhite@email.com,555-234-5678,invalid_date,CANADA,340.00,Inactive
+1009,Robert Harris,52,M,robert.harris@email.com,(555) 345-6789,2023-08-14,Canada,275.50,active
+1010,Mary Martinez,38,Female,mary.martinez@,555-456-7890,2023-09-01,UK,190.00,Active
+1011,Patricia Moore,,Female,patricia.moore@email.com,555-567-8901,2023-10-05,United Kingdom,,Active
+1012,Charles Lee,41,male,charles.lee@email.com,555-678-9012,2023-11-11,uk,410.00,Inactive
+1013,Barbara Clark,-5,Female,barbara.clark@email.com,555-789-0123,2023-12-15,UK,150.75,Active
+1014,Daniel Lewis,33,Male,daniel.lewis@email.com,555-890-1234,2024-01-20,Australia,225.00,Active
+1015,Susan Walker,,,susan.walker@email.com,555-901-2345,2024/02/14,AUS,,Inactive
+1016,Mark Hall,47,Male,mark.hall@email.com,,2024-03-08,Australia,380.50,active
+1017,Karen Allen,36,Female,karen.allen@email.com,555-012-3456,08-04-2024,australia,265.00,Active
+1018,Steven Young,29,Male,steven.young@email.com,555-123-9876,2024-05-30,India,199.99,Active
+1019,Nancy King,150,Female,nancy.king@email.com,555-234-8765,2024-06-12,india,310.00,Inactive
+1020,Paul Wright,39,MALE,paul.wright@email.com,555-345-7654,2024-07-19,INDIA,,Active
+1021,Betty Scott,,Female,betty.scott@email.com,555-456-6543,2024-08-25,India,175.25,Active
+1022,George Green,44,Male,george.green@email.com,555-567-5432,2024/09/30,India,,Inactive
+1023,Sandra Baker,30,female,sandra.baker@email,555-678-4321,2024-10-15,Germany,220.00,active
+1024,Kevin Adams,26,Male,,555-789-3210,2024-11-02,Germany,195.50,Active
+1025,Michelle Nelson,,Female,michelle.nelson@email.com,555-890-4321,2024/12/09,GERMANY,,inactive
+1026,Brian Carter,48,Male,brian.carter@email.com,555-901-5432,2025-01-15,germany,"$1,250.00",active
+1027,Amanda Mitchell,32,Female,amanda.mitchell@email.com,,2025-02-20,France,230.00,Active
+1001,John Smith,28,Male,john.smith@email.com,123-456-7890,2023-01-15,USA,250.50,Active
+1016,Mark Hall,47,Male,mark.hall@email.com,,2024-03-08,Australia,380.50,active
+1009,Robert Harris,52,M,robert.harris@email.com,(555) 345-6789,2023-08-14,Canada,275.50,active
