@@ -16,7 +16,7 @@ class Vector:
         yield from self.components
 
     def __len__(self):
-        return len(self.components)
+        return len(self.components)   
 
     def __getitem__(self, key):
         return self.components[key]
@@ -158,6 +158,12 @@ class Matrix:
             transposed.append(new)
 
         return transposed
+
+    def vector_multiplication(self, vect):
+        if not isinstance(vect, Vector):
+            raise TypeError("Vect must be type of vector")
+        
+
 
 
 a = Matrix((10, 20, 30), (40, 50, 60), (70, 80, 90))

@@ -52,7 +52,7 @@
 
 - Utility operations
 - Addition
-- Subtraction
+- Subtraction  
 - Multiplication
 - Transpose
 - (Gaussian elimination method)
@@ -70,3 +70,10 @@
   - An invalid case.
 
 - Matrix multiplication, Vector and Scalar Operations, Transpose operations will come very handy in Gradient descent and Neural Network projects
+
+- In vector * matrix, matrix-vector multiplication is a linear transformation that maps a vector from one coordinate space to another, effectively rotating, scaling, or shearing the input vector.
+
+- How much of the input vector x points in the direction of the i -th row of the matrix?
+- number of rows of vector must be equal to number of columns of matrix. while the number of rows determines the dimension of the resulting vector
+
+- 
