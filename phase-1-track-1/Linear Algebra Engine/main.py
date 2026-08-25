@@ -162,16 +162,28 @@ class Matrix:
     def vector_multiplication(self, vect):
         if not isinstance(vect, Vector):
             raise TypeError("Vect must be type of vector")
-        
+        if len(self.rows[0]) != len(vect):
+            raise ValueError("Dimensions must match")
+
+        result = [sum(m * v for m, v in zip(rows, vect)) for rows in self.rows]
+        return result
+
+    def matrix_multiplication(self, other):
+        if not isinstance(other, Matrix):
+            raise TypeError("Other must be type of matrix")
+        if len(self.rows[0]) != len(other.rows):
+            raise ValueError("Dimensions must match")
 
 
-
+b = Vector(1,2,3)
 a = Matrix((10, 20, 30), (40, 50, 60), (70, 80, 90))
 m = Matrix((1, 2, 7), (3, 4, 8), (5, 6, 9))
 n = Matrix((1, 2, 7), (3, 4, 8), (5, 6, 9))
 v = m.__add__(n)
 w = m.__sub__(n)
 x = m.__mul__(5)
+news = m.vector_multiplication(b)
+print("vector mult with matrix: ", news)
 print(x)
 print(v)
 print(w)
