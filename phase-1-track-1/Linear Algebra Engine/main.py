@@ -172,13 +172,22 @@ class Matrix:
         if not isinstance(other, Matrix):
             raise TypeError("Other must be type of matrix")
         if len(self.rows[0]) != len(other.rows):
-            raise ValueError("Dimensions must match")
+            raise ValueError("Length of column of first matrix must match with length of rows of second matrix")
+
+        transposed = list(zip(*other))
+
+        result = tuple(tuple(sum(a * b for a , b in zip(row, col)) for col in transposed) for row in self.rows)
+        return result
 
 
 b = Vector(1,2,3)
 a = Matrix((10, 20, 30), (40, 50, 60), (70, 80, 90))
 m = Matrix((1, 2, 7), (3, 4, 8), (5, 6, 9))
 n = Matrix((1, 2, 7), (3, 4, 8), (5, 6, 9))
+r = Matrix((1,2,3), (1,2,3), (1,2,3))
+s = Matrix((4,5,6), (4,5,6), (4,5,6))
+mal = r.matrix_multiplication(s)
+print("mal", mal)
 v = m.__add__(n)
 w = m.__sub__(n)
 x = m.__mul__(5)
