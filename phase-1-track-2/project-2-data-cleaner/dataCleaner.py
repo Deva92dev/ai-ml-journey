@@ -5,16 +5,16 @@ import pandas as pd
 data_file = "customerData.csv"
 
 expected_types = {
-    'customer_id': "int64",
-    'customer_name': "str",
-    'age': "int",
-    'gender': "str",               
-    'email': "str",                
-    'phone': "int",              
-    'signup_date': "datetime",           
-    'country': "str",            
-    'purchase_amount' : "int",       
-    'membership_status': "text"    
+    'CustomerID': "int",
+    'CustomerName': "str",
+    'Age': "int",
+    'Gender': "text",               
+    'Email': "text",                
+    'Phone': "text",              
+    'SignupDate': "datet",           
+    'Country': "text",            
+    'PurchaseAmount' : "int",       
+    'MembershipStatus': "text"    
 }
 
 def load_csv(file):
@@ -56,13 +56,12 @@ def display_invalid_data(df):
     signup_date = df[pd.to_datetime(df['SignupDate'], errors='coerce').isna()]
     return phone, age, signup_date, price
 
-def wrong_data_types_count(df):
-    new = df['Age'].apply(type).value_counts()
-    ids = df['Gender'].apply(type).value_counts()
-    email = df['Email'].apply(type).value_counts()
-    phone = df['Phone'].apply(type).value_counts()
-    amount = df["PurchaseAmount"].apply(type).value_counts()
-    return new, ids, email, phone, amount
+def wrong_data_types(df):
+    for col, expected in expected_types.items():
+        actual = str(df[col].dtype)
+        
+def text_formatting(df):
+    df["CustomerName"] = df["CustomerName"].str.strip().str.title()
 
 def display_report(df):
     data_type = display_data_structure(df)
@@ -75,9 +74,7 @@ def inspection_report(df):
     row, cols = shape_of_data(df)
     missing = missing_values_count(df)
     duplicates = duplicate_values_count(df)
-    new, ids, email, phone, amount = wrong_data_types_count(df)
-
-    return row, cols, missing, duplicates, new, ids, email, phone, amount
+    return row, cols, missing, duplicates
 
 
 
@@ -87,7 +84,7 @@ def print_statement(text, *args):
 def main():
     df = load_csv(data_file)
     data_type, missing, duplicates, invalid, age, signup_date, price = display_report(df)
-    row, cols, all_missing, all_duplicates, new, ids, email, phone, amount = inspection_report(df)
+    row, cols, all_missing, all_duplicates = inspection_report(df)
     
     print_statement("Data types: ", data_type)
     print_statement("Missing Values:\n ", missing)
@@ -101,11 +98,9 @@ def main():
     print_statement("cols inpection: ", cols)
     print_statement("all missing values count: ", all_missing)
     print_statement("all duplicate counts: ", all_duplicates)
-    print_statement("all missing age count: ", new)
-    print_statement("all gender missing count: ", ids)
-    print_statement("all missing email count: ", email)
-    print_statement("all missing phones count: ", phone)
-    print_statement("all missing purchase amount: ", amount)
+
+    text_formatting(df)
+    wrong_data_types(df)
 
 if __name__ == "__main__":
     main()
