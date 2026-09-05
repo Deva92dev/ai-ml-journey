@@ -60,7 +60,7 @@
   - Identity matrix
   - Inverse
   - Rank
-- Eigenvalues and Eigenvectors
+- Eigenvalues and Eigenvectors              
 
 # Extensibility
 

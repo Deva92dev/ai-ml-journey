@@ -127,7 +127,7 @@ class Matrix:
     def __sub__(self, other):
         if not isinstance(other, Matrix):
             raise TypeError("Both must be of same type")
-        if len(self.rows) != len(other.rows) and len(self.rows[0]) != len(
+        if len(self.rows) != len(other.rows) or len(self.rows[0]) != len(
             other.rows[0]
         ):
             raise ValueError("Both matrices must have the same dimension and order")
@@ -179,8 +179,21 @@ class Matrix:
         result = tuple(tuple(sum(a * b for a , b in zip(row, col)) for col in transposed) for row in self.rows)
         return result
 
+    def matrix_transpose(self):
+        if not all(len(row) == len(self.rows[0]) for row in self.rows):
+            raise ValueError("Must have equal length of rows and column")
+
+        # Initialize transposed matrix with swapped dimensions
+        transposed_rows = []
+        for j in range(len(self.rows[0])):
+            new_row = tuple(self.rows[i][j] for i in range(len(self.rows)))
+            transposed_rows.append(new_row)
+
+        return tuple(transposed_rows)
+
 
 b = Vector(1,2,3)
+f = Matrix((10, 20), (30, 40), (50, 60))
 a = Matrix((10, 20, 30), (40, 50, 60), (70, 80, 90))
 m = Matrix((1, 2, 7), (3, 4, 8), (5, 6, 9))
 n = Matrix((1, 2, 7), (3, 4, 8), (5, 6, 9))
@@ -192,6 +205,8 @@ v = m.__add__(n)
 w = m.__sub__(n)
 x = m.__mul__(5)
 news = m.vector_multiplication(b)
+a_transposed = f.matrix_transpose()
+print("transposed: ", a_transposed)
 print("vector mult with matrix: ", news)
 print(x)
 print(v)
