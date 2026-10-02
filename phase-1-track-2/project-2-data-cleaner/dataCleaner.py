@@ -18,6 +18,35 @@ expected_types = {
     'MembershipStatus': "text"    
 }
 
+country_mapping = {
+    "USA": "United States",
+    "usa": "United States",
+    "US": "United States",
+    "United States": "United States",
+
+    "Canada": "Canada",
+    "CANADA": "Canada",
+
+    "UK": "United Kingdom",
+    "uk": "United Kingdom",
+    "United Kingdom": "United Kingdom",
+
+    "Australia": "Australia",
+    "AUS": "Australia",
+    "australia": "Australia",
+
+    "India": "India",
+    "india": "India",
+    "INDIA": "India",
+
+    "Germany": "Germany",
+    "GERMANY": "Germany",
+    "germany": "Germany",
+
+    "France": "France"
+}
+
+
 def load_csv(file):
     df = pd.read_csv(file, on_bad_lines="warn")
     return df
@@ -40,20 +69,50 @@ def total_missing_values(df):
     missing_count = df.isnull().values.sum()
     return missing_count
 
+
 def display_duplicate_values(df):
     duplicates = df[df.duplicated(keep=False)]
     return duplicates
+
 
 def total_duplicates_count(df):
     total_duplicates = df.duplicated().sum()
     return total_duplicates
 
 def display_invalid_data(df):
-    phone = df[pd.to_numeric(df['Phone'], errors='coerce').isna()]
-    price = df[pd.to_numeric(df['PurchaseAmount'], errors='coerce').isna()]
-    age = df[pd.to_numeric(df['Age'], errors='coerce').isna()]
-    signup_date = df[pd.to_datetime(df['SignupDate'], errors='coerce').isna()]
+    phone_pattern = r'^\(?\d{3}\)?[-.\s]\d{3}[-.\s]\d{3,4}$'
+
+    phone = df[
+        df["Phone"].notna() &
+        ~df["Phone"].str.strip().str.match(phone_pattern, na=False)
+    ]
+
+    price = df[
+        df["PurchaseAmount"].notna() &
+        pd.to_numeric(
+            df["PurchaseAmount"]
+            .astype("string")
+            .str.replace(r'[$,]', '', regex=True),
+            errors="coerce"
+        ).isna()
+    ]
+
+    age = df[
+    df["Age"].notna() &
+    (
+        ~pd.to_numeric(df["Age"], errors="coerce").notna()
+        | (pd.to_numeric(df["Age"], errors="coerce") < 0)
+    )
+]
+
+    signup_date = df[
+        df["SignupDate"].notna() &
+        pd.to_datetime(df["SignupDate"], errors="coerce").isna()
+    ]
+
     return phone, age, signup_date, price
+
+
 
 def total_invalid_counts_from_display(df):
     phone, age, signup_date, price = display_invalid_data(df)
@@ -61,6 +120,7 @@ def total_invalid_counts_from_display(df):
     invalid_price_count = len(price)
     invalid_age_count = len(age)
     invalid_signup_count = len(signup_date)
+    print("from display: ", invalid_phone_count, invalid_age_count, invalid_price_count, invalid_signup_count)
     invalid_counts_from_display = invalid_phone_count + invalid_age_count + invalid_price_count + invalid_signup_count
     return invalid_counts_from_display
 
@@ -75,14 +135,16 @@ def wrong_data_types(df):
 # name, email, country
 def detect_text_formatting(df):
     email = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
-    df["valid_email"] = df['Email'].str.match(email, na=False)
-    emails = df[~df['valid_email']]
+    email_validity = df['Email'].str.match(email, na=False)
+    emails = df[~email_validity]
 
     names_spacs = df["CustomerName"].str.startswith(' ')
     names = df[names_spacs]
 
-    country_mixed = df["Country"].str.match(r'^(?:[A-Z][a-z]+(?:\s[A-Z][a-z]+)*)$')
-    countries = df[country_mixed]
+    country_clean = df["Country"].str.strip()
+    country_standardized = country_clean.replace(country_mapping)
+
+    countries = df[country_clean != country_standardized]
 
     return emails, names, countries
 
@@ -92,6 +154,7 @@ def total_invalid_counts_from_formatting(df):
     invalid_emails_count = emails.shape[0]
     invalid_names_count = len(names)
     invalid_countries_count = len(countries)
+    print("from function: ", invalid_countries_count, invalid_names_count, invalid_emails_count)
     invalid_counts_from_formatting = invalid_emails_count + invalid_names_count + invalid_countries_count
     return invalid_counts_from_formatting   
 
@@ -111,6 +174,28 @@ def inspection_report(df):
     invalid_counts_from_formatting = total_invalid_counts_from_formatting(df)
     invalids = invalid_counts_from_formatting + invalid_counts_from_display
     return row, cols, total_missing, duplicates, invalids
+
+
+def cleaned_data(df):
+    df["Gender"] = df["Gender"].str.capitalize()
+    df["Country"] = df["Country"].str.title() 
+    df["Age"] = pd.to_numeric(df["Age"], errors="coerce")
+    df["SignupDate"] = pd.to_datetime(df["SignupDate"], format="mixed", errors='coerce')
+    df["PurchaseAmount"] = pd.to_numeric(df["PurchaseAmount"], errors="coerce")
+
+    df.loc[(df["Age"] < 0) | (df["Age"] > 120), "Age"] = pd.NA
+
+    df = df.drop_duplicates()
+
+    df["Age"] = df["Age"].fillna(df["Age"].mode()[0])
+    df["Gender"] = df["Gender"].fillna(df["Gender"].mode()[0])
+    df["Email"] = df["Email"].fillna(df["Email"].mode()[0])
+    df["Phone"] = df["Phone"].fillna(df["Phone"].mode()[0])
+    df["PurchaseAmount"] = df["PurchaseAmount"].fillna(df["PurchaseAmount"].mode()[0])
+
+    df = df.apply(lambda x:x.str.strip() if x.dtype == "object" else x)
+
+    return df
 
 
 def print_statement(text, *args):
@@ -140,6 +225,34 @@ def main():
     print_statement("all missing values count: ", total_missing)
     print_statement("all duplicate counts: ", all_duplicates)
     print_statement("all invalids data count: ", invalids)
+
+    df = cleaned_data(df)
+    df.to_csv("cleaned_customerData.csv", index=False)
+    cleaned_row, cleaned_cols, cleaned_missing, cleaned_duplicates, cleaned_invalids = inspection_report(df)
+
+    report = f"""
+        CSV DATA CLEANING REPORT
+        ========================
+
+        Before Cleaning
+        ---------------
+        Rows: {row}
+        Columns: {cols}
+        Missing values: {total_missing}
+        Duplicates: {all_duplicates}
+        Invalid findings: {invalids}
+
+        After Cleaning
+        --------------
+        Rows: {cleaned_row}
+        Columns: {cleaned_cols}
+        Missing values: {cleaned_missing}
+        Duplicates: {cleaned_duplicates}
+        Invalid findings: {cleaned_invalids}
+        """
+
+    with open("cleaning_report.txt", "w") as file:
+        file.write(report)
 
 if __name__ == "__main__":
     main()

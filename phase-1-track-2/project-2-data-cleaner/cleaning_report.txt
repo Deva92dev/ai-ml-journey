@@ -1,0 +1,20 @@
+
+        CSV DATA CLEANING REPORT
+        ========================
+
+        Before Cleaning
+        ---------------
+        Rows: 30
+        Columns: 10
+        Missing values: 17
+        Duplicates: 3
+        Invalid findings: 33
+
+        After Cleaning
+        --------------
+        Rows: 27
+        Columns: 10
+        Missing values: 1
+        Duplicates: 0
+        Invalid findings: 5
+        
