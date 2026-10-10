@@ -6,7 +6,6 @@ from pydantic import BaseModel, Field
 
 app = FastAPI(title="My Books API")
 
-
 class HealthResponse(BaseModel):
     status: str
     version: str
@@ -24,7 +23,7 @@ class PaginatedBooks(BaseModel):
     data: list[Book]
     total: int
     limit: int
-    offset: int
+    offset: int        
     count: int
 
 
